@@ -1,47 +1,34 @@
 import React from 'react';
 import { Column } from '@ant-design/plots';
 import { useModel } from 'umi';
-import { IClubStatistics } from '@/types/club';
 
 const ClubChart: React.FC = () => {
-  const { clubStatistics } = useModel('club');
+  const { clubStatistics } = useModel('statistics');
 
-  const config = {
-    data: clubStatistics,
-    xField: 'clubName',
-    yField: 'value',
-    seriesField: 'type',
-    isGroup: true,
-    columnStyle: {
-      radius: [4, 4, 0, 0],
-    },
-    legend: {
-      position: 'top',
-    },
-    xAxis: {
-      label: {
-        autoRotate: false,
-      },
-    },
-    yAxis: {
-      title: {
-        text: 'Số lượng đơn đăng ký',
-      },
-    },
-    tooltip: {
-      shared: true,
-      showMarkers: false,
-    },
-  };
-
-  // Transform data for chart
-  const chartData = clubStatistics.flatMap((stat: IClubStatistics) => [
+  const chartData = clubStatistics.flatMap(stat => [
     { clubName: stat.clubName, type: 'Chờ duyệt', value: stat.pending },
     { clubName: stat.clubName, type: 'Đã duyệt', value: stat.approved },
     { clubName: stat.clubName, type: 'Từ chối', value: stat.rejected },
   ]);
 
-  return <Column {...config} data={chartData} />;
+  const config = {
+    data: chartData,
+    isGroup: true,
+    xField: 'clubName',
+    yField: 'value',
+    seriesField: 'type',
+    color: ['#faad14', '#52c41a', '#ff4d4f'],
+    label: {
+      position: 'middle',
+    },
+    xAxis: {
+      label: {
+        autoRotate: true,
+      },
+    },
+  };
+
+  return <Column {...config} />;
 };
 
 export default ClubChart; 

@@ -1,48 +1,53 @@
 import React from 'react';
 import { Button } from 'antd';
-import { useModel } from 'umi';
+import { DownloadOutlined } from '@ant-design/icons';
 import * as XLSX from 'xlsx';
-import { IMember, IClub } from '@/types/club';
+import { useModel } from 'umi';
 
 const ExportMembers: React.FC = () => {
-  const { members, clubs } = useModel('club');
+  const { exportMembersByClub } = useModel('statistics');
 
   const handleExport = () => {
-    const approvedMembers = members.filter((m: IMember) => m.status === 'approved');
-    
-    // Group members by club
-    const membersByClub = clubs.reduce((acc: any, club: IClub) => {
-      const clubMembers = approvedMembers.filter((m: IMember) => m.clubId === club.id);
+    const clubs = JSON.parse(localStorage.getItem('clubs') || '[]');
+    const registrations = JSON.parse(localStorage.getItem('registrations') || '[]');
+
+    // Lọc các đơn đã được duyệt và group theo CLB
+    const membersByClub = clubs.reduce((acc: any, club: any) => {
+      const clubMembers = registrations.filter(
+        (r: any) => r.status === 'approved' && r.clubId === club.id
+      );
+
       if (clubMembers.length > 0) {
-        acc[club.name] = clubMembers.map((m: IMember, index: number) => ({
-          STT: index + 1,
-          'Họ tên': m.name,
-          'Email': m.email,
-          'SĐT': m.phone,
-          'CLB': club.name,
-          'Giới tính': m.gender === 'male' ? 'Nam' : m.gender === 'female' ? 'Nữ' : 'Khác',
-          'Địa chỉ': m.address,
-          'Sở trường': m.skills.join(', '),
+        acc[club.name] = clubMembers.map((member: any) => ({
+          'Họ tên': member.fullName,
+          'Email': member.email,
+          'SĐT': member.phone,
+          'Giới tính': member.gender === 'male' ? 'Nam' : member.gender === 'female' ? 'Nữ' : 'Khác',
+          'Địa chỉ': member.address,
+          'Sở trường': member.skills,
+          'Ngày đăng ký': new Date(member.createdAt).toLocaleDateString('vi-VN'),
         }));
       }
       return acc;
     }, {});
 
-    // Create workbook
+    // Tạo workbook với sheet cho từng CLB
     const wb = XLSX.utils.book_new();
-
-    // Add each club's members to a separate sheet
-    Object.entries(membersByClub).forEach(([clubName, data]: [string, any]) => {
-      const ws = XLSX.utils.json_to_sheet(data);
+    Object.entries(membersByClub).forEach(([clubName, members]) => {
+      const ws = XLSX.utils.json_to_sheet(members as any[]);
       XLSX.utils.book_append_sheet(wb, ws, clubName);
     });
 
-    // Save file
-    XLSX.writeFile(wb, 'danh_sach_thanh_vien.xlsx');
+    // Xuất file
+    XLSX.writeFile(wb, `danh_sach_thanh_vien_${new Date().getTime()}.xlsx`);
   };
 
   return (
-    <Button type="primary" onClick={handleExport}>
+    <Button 
+      type="primary" 
+      icon={<DownloadOutlined />} 
+      onClick={handleExport}
+    >
       Xuất danh sách thành viên
     </Button>
   );

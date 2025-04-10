@@ -1,17 +1,16 @@
 import React from 'react';
 import { Card, Row, Col, Statistic } from 'antd';
 import { useModel } from 'umi';
-import { IStatistics } from '@/types/club';
 
 const Overview: React.FC = () => {
-  const { statistics } = useModel('club');
+  const { statistics } = useModel('statistics');
 
   return (
     <Row gutter={16}>
       <Col span={6}>
         <Card>
           <Statistic
-            title="Tổng số câu lạc bộ"
+            title="Tổng số CLB"
             value={statistics.totalClubs}
           />
         </Card>
@@ -19,8 +18,8 @@ const Overview: React.FC = () => {
       <Col span={6}>
         <Card>
           <Statistic
-            title="Đơn chờ duyệt"
-            value={statistics.pendingMembers}
+            title="Chờ duyệt"
+            value={statistics.pendingRegistrations}
             valueStyle={{ color: '#faad14' }}
           />
         </Card>
@@ -28,8 +27,8 @@ const Overview: React.FC = () => {
       <Col span={6}>
         <Card>
           <Statistic
-            title="Đơn đã duyệt"
-            value={statistics.approvedMembers}
+            title="Đã duyệt"
+            value={statistics.approvedRegistrations}
             valueStyle={{ color: '#52c41a' }}
           />
         </Card>
@@ -37,8 +36,8 @@ const Overview: React.FC = () => {
       <Col span={6}>
         <Card>
           <Statistic
-            title="Đơn bị từ chối"
-            value={statistics.rejectedMembers}
+            title="Từ chối"
+            value={statistics.rejectedRegistrations}
             valueStyle={{ color: '#ff4d4f' }}
           />
         </Card>

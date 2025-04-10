@@ -6,11 +6,9 @@ import ClubChart from '@/components/Statistics/ClubChart';
 import ExportMembers from '@/components/Statistics/ExportMembers';
 
 const StatisticsPage: React.FC = () => {
-  const { fetchClubs, fetchMembers, calculateStatistics } = useModel('club');
+  const { calculateStatistics } = useModel('statistics');
 
   useEffect(() => {
-    fetchClubs();
-    fetchMembers();
     calculateStatistics();
   }, []);
 

@@ -51,6 +51,11 @@
 				component: './Membership',
 				hideInMenu: true,
 			},
+			{
+				path: '/clubs/:id/registrations',
+				component: './Registration',
+				hideInMenu: true,
+			},
 		],
 	},
 
@@ -61,7 +66,12 @@
 		component: './Registration',
 	},
 
-	
+	{
+		path: '/statistics',
+		name: 'Thống kê',
+		icon: 'BarChartOutlined',
+		component: './Statistics',
+	},
 
 	// DANH MUC HE THONG
 	// {
