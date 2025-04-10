@@ -37,6 +37,18 @@
 		icon: 'ArrowsAltOutlined',
 	},
 
+	{
+		path: '/clubs',
+		name: 'Quản lý CLB',
+		icon: 'TeamOutlined',
+		routes: [
+			{
+				path: '/clubs',
+				component: './Club',
+			},
+		],
+	},
+
 	// DANH MUC HE THONG
 	// {
 	// 	name: 'DanhMuc',
