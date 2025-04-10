@@ -49,6 +49,13 @@
 		],
 	},
 
+	{
+		path: '/registrations',
+		name: 'Quản lý đơn đăng ký',
+		icon: 'FormOutlined',
+		component: './Registration',
+	},
+
 	// DANH MUC HE THONG
 	// {
 	// 	name: 'DanhMuc',
