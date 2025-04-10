@@ -46,6 +46,11 @@
 				path: '/clubs',
 				component: './Club',
 			},
+			{
+				path: '/clubs/:id/members',
+				component: './Membership',
+				hideInMenu: true,
+			},
 		],
 	},
 
@@ -55,6 +60,8 @@
 		icon: 'FormOutlined',
 		component: './Registration',
 	},
+
+	
 
 	// DANH MUC HE THONG
 	// {
